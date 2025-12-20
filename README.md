@@ -16,11 +16,11 @@ Dies ist die **FOUNDATION** - das Fundament für ein komplettes Farm-Management-
 - ✅ Multi-Framework (QBox, QBCore, ESX)
 - ✅ Moderner Shop mit UI
 
-**Was NOCH NICHT funktioniert:**
-- ❌ Melken (kommt in v0.4.0)
-- ❌ Füttern/Pflegen (kommt in v0.2.0)
-- ❌ Wachstum/Stages (kommt in v0.3.0)
-- ❌ Stats-System (kommt in v0.2.0)
+**Weiteres geplant - Step für Step Test:**
+v0.2.0 - Melken       ✅ Ich kann was machen!
+v0.3.0 - Stats        ✅ Ich seh wie sie sich ändern!
+v0.4.0 - Stats→Milch  ✅ Stats haben Auswirkung!
+v0.5.0 - Wachstum     ✅ Langzeit-Gameplay!
 
 ---
 
@@ -141,6 +141,7 @@ holycow_version    - Version-Tracking
 -- config.lua:
 Config.ShopNPC.Enabled = true
 Config.ShopNPC.Coords = vector4(...) -- Richtige Koordinaten?
+-- Der NPC fliegt? Setze die letzte Koordinante z.b 34.44 auf 33.44 - also um 1 runter.
 ```
 
 ### **Shop öffnet nicht**
