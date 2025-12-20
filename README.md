@@ -17,10 +17,10 @@ Dies ist die **FOUNDATION** - das Fundament für ein komplettes Farm-Management-
 - ✅ Moderner Shop mit UI
 
 **Weiteres geplant - Step für Step Test:**
-v0.2.0 - Melken       ✅ Ich kann was machen!
-v0.3.0 - Stats        ✅ Ich seh wie sie sich ändern!
-v0.4.0 - Stats→Milch  ✅ Stats haben Auswirkung!
-v0.5.0 - Wachstum     ✅ Langzeit-Gameplay!
+- v0.2.0 - Melken       ✅ Ich kann was machen!
+- v0.3.0 - Stats        ✅ Ich seh wie sie sich ändern!
+- v0.4.0 - Stats→Milch  ✅ Stats haben Auswirkung!
+- v0.5.0 - Wachstum     ✅ Langzeit-Gameplay!
 
 ---
 
