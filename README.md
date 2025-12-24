@@ -1,224 +1,265 @@
-# 🐄 HM HOLY COW v0.1.0
+# 🐄🐔🐷 Multi-Farm v0.3.0
 
-**Farm Management System - Foundation Build**
-
----
-
-## 🎯 Was ist v0.1.0?
-
-Dies ist die **FOUNDATION** - das Fundament für ein komplettes Farm-Management-System!
-
-**Was funktioniert:**
-- ✅ Kühe kaufen (2 Rassen: Holstein & Jersey)
-- ✅ Slot-System (6 Positionen)
-- ✅ Kühe spawnen automatisch
-- ✅ MySQL-Datenbank (persistent)
-- ✅ Multi-Framework (QBox, QBCore, ESX)
-- ✅ Moderner Shop mit UI
-
-**Weiteres geplant - Step für Step Test:**
-- v0.2.0 - Melken       ✅ Ich kann was machen!
-- v0.3.0 - Stats        ✅ Ich seh wie sie sich ändern!
-- v0.4.0 - Stats→Milch  ✅ Stats haben Auswirkung!
-- v0.5.0 - Wachstum     ✅ Langzeit-Gameplay!
+**Farm Management System mit Kühen, Hühnern und Schweinen**
 
 ---
 
-## 📦 Installation
+## ✨ **Features**
 
-### **1. SQL ausführen**
+### **3 Tierarten:**
+- 🐄 **Kühe** - 5 Rassen, Milch sammeln (15 Min Cooldown)
+- 🐔 **Hühner** - 3 Rassen, Eier sammeln (10 Min Cooldown)
+- 🐷 **Schweine** - 3 Rassen, Füttern & Fleisch (20 Min Cooldown)
 
+### **30 Slots total:**
+- 10 Kuh-Slots
+- 10 Hühner-Slots
+- 10 Schweine-Slots
+
+### **3 NPCs:**
+- Kuh-Farmer (Grapeseed)
+- Hühner-Züchter (Grapeseed Nord)
+- Schweine-Züchter (Grapeseed Ost)
+
+### **Gameplay:**
+- Verschiedene Rassen mit Stats (Gesundheit, Wachstum, Produktion)
+- Cooldown-System
+- ox_lib Menu UI
+- Blips für alle Tiere
+- Custom Namen
+- Debug-Commands
+
+---
+
+## 📋 **Installation**
+
+### **1. Dateien kopieren:**
+```
+resources/[custom]/multifarm/
+```
+
+### **2. SQL ausführen:**
 ```sql
--- Führe aus: sql/v0.1.0_install.sql
+-- Execute: docs/schema.sql
+-- WICHTIG: Koordinaten anpassen wenn nötig!
 ```
 
-### **2. Dependencies**
+### **3. Items hinzufügen:**
+Kopiere Items aus `docs/items.lua` nach `ox_inventory/data/items.lua`:
+```lua
+-- Kühe
+'milk_bucket', 'milk_stool', 'raw_milk'
 
-Benötigt:
-- ox_lib
-- ox_target
-- oxmysql
+-- Hühner
+'eggs'
 
-### **3. Resource starten**
-
-```cfg
-# server.cfg
-ensure oxmysql
-ensure ox_lib
-ensure ox_target
-ensure hm_holycow
+-- Schweine
+'pig_feed', 'pork'
 ```
 
-### **4. Koordinaten anpassen!**
+### **4. Config anpassen:**
+```lua
+-- config.lua
+Config.Framework = 'qbox'  -- oder 'qbcore', 'esx'
 
-⚠️ **WICHTIG:** Die SQL enthält Beispiel-Koordinaten für Grapeseed!
-
-**Option A: SQL direkt anpassen**
-```sql
--- In sql/v0.1.0_install.sql:
-INSERT INTO `holycow_slots` (...) VALUES
-(1, DEINE_X, DEINE_Y, DEINE_Z, HEADING),
-...
+-- NPC Positionen anpassen wenn gewünscht:
+Config.NPCs.cow.Coords = vector4(...)
+Config.NPCs.chicken.Coords = vector4(...)
+Config.NPCs.pig.Coords = vector4(...)
 ```
 
-**Option B: Nach Installation updaten**
-```sql
-UPDATE holycow_slots SET pos_x = X, pos_y = Y, pos_z = Z WHERE slot_number = 1;
+### **5. Permissions:**
+```lua
+-- server.cfg
+add_ace group.admin multifarm.admin allow
 ```
 
----
-
-## 🎮 Nutzung
-
-### **Als Spieler:**
-
-1. Gehe zur Farm (Blip auf Map)
-2. Finde den NPC (Farmer mit Clipboard)
-3. E drücken → "Kühe kaufen"
-4. Wähle Rasse + Slot
-5. Kaufen!
-6. Kuh spawnt automatisch
-
-### **Als Admin:**
-
-```bash
-# Debug Commands:
-/holycow_list      # Alle Kühe anzeigen
-/holycow_slots     # Freie Slots anzeigen
-/holycow_reset     # ALLES löschen (VORSICHT!)
-/holycow_shop      # Shop öffnen (Test)
+### **6. Resource starten:**
+```
+ensure multifarm
 ```
 
 ---
 
-## ⚙️ Konfiguration
+## 🎮 **Wie spielen?**
 
-Alles in `config.lua`:
+### **Kühe:**
+1. Gehe zum **Kuh-Farmer** NPC
+2. Kaufe eine Kuh (5 Rassen: $500-$1800)
+3. Wähle einen Slot
+4. **Melken:** Benötigt Melkeimer + Melkschemel
+5. Cooldown: 15 Minute
+
+### **Hühner:**
+1. Gehe zum **Hühner-Züchter** NPC
+2. Kaufe ein Huhn (3 Rassen: $150-$800)
+3. Wähle einen Slot
+4. **Eier sammeln:** Keine Items benötigt!
+5. Cooldown: 10 Minuten
+
+### **Schweine:**
+1. Gehe zum **Schweine-Züchter** NPC
+2. Kaufe ein Schwein (3 Rassen: $600-$2000)
+3. Wähle einen Slot
+4. **Füttern:** Benötigt Schweinefutter!
+5. Cooldown: 20 Minuten
+
+---
+
+## 🐄 **Kuh-Rassen**
+
+| Rasse | Preis | Seltenheit | Milch | Beschreibung |
+|-------|-------|-----------|-------|--------------|
+| Holstein-Friesian | $500 | Common | 3x | Standard Milchkuh |
+| Jersey Premium | $1200 | Rare | 5x | 50% schnelleres Wachstum |
+| Black Angus | $900 | Uncommon | 2x | Robuste Fleischrasse |
+| Schweizer Braunvieh | $1500 | Rare | 4x | Perfekt für Käse |
+| Simmental Elite | $1800 | Epic | 6x | Beste Milchproduktion |
+
+---
+
+## 🐔 **Hühner-Rassen**
+
+| Rasse | Preis | Seltenheit | Eier | Beschreibung |
+|-------|-------|-----------|------|--------------|
+| Legehennen | $150 | Common | 2x | Standard Hühner |
+| Premium-Huhn | $400 | Rare | 4x | Doppelte Eierproduktion |
+| Gold-Huhn | $800 | Epic | 6x | Elite-Rasse, beste Eier |
+
+---
+
+## 🐷 **Schweine-Rassen**
+
+| Rasse | Preis | Seltenheit | Fleisch | Beschreibung |
+|-------|-------|-----------|---------|--------------|
+| Hausschwein | $600 | Common | 2x | Standard Mastschwein |
+| Mastschwein | $1200 | Rare | 4x | Doppelte Fleischausbeute |
+| Premium-Schwein | $2000 | Epic | 6x | Elite-Rasse, bestes Fleisch |
+
+---
+
+## 🛠️ **Debug Commands**
+
+### **Admin-Commands (brauchen ACE):**
+```
+/multifarm_list          - Alle Tiere anzeigen
+/multifarm_slots         - Slot-Status
+/multifarm_cleanup       - Zombie Slots fixen
+/multifarm_reset         - ALLE Tiere löschen (VORSICHT!)
+```
+
+### **Player-Commands (Debug = true):**
+```
+/multifarm_cow_shop      - Kuh-Shop öffnen
+/multifarm_chicken_shop  - Hühner-Shop öffnen
+/multifarm_pig_shop      - Schweine-Shop öffnen
+```
+
+---
+
+## 📊 **Items**
+
+### **Kühe:**
+- `milk_bucket` - Melkeimer (benötigt)
+- `milk_stool` - Melkschemel (benötigt)
+- `raw_milk` - Rohmilch (Produkt)
+
+### **Hühner:**
+- `eggs` - Eier (Produkt)
+
+### **Schweine:**
+- `pig_feed` - Schweinefutter (benötigt, wird verbraucht!)
+- `pork` - Schweinefleisch (Produkt)
+
+---
+
+## ⚙️ **Config Highlights**
 
 ```lua
--- Farm Location
-Config.Farm.Blip.Coords = vector3(x, y, z)
+-- Permissions
+Config.Permissions = {
+    MaxAnimals = 30,     -- Gesamt
+    MaxCows = 10,
+    MaxChickens = 10,
+    MaxPigs = 10,
+}
 
--- NPC Position
-Config.ShopNPC.Coords = vector4(x, y, z, heading)
+-- Milking (Kühe)
+Config.Milking = {
+    CooldownMinutes = 15,
+    RequireItems = true,
+}
 
--- Kuh-Typen
-Config.CowTypes = { ... }
+-- Egg Collection (Hühner)
+Config.EggCollection = {
+    CooldownMinutes = 10,
+    RequireItems = false,  -- Keine Items!
+}
 
--- Preise
-Config.CowTypes[1].price = 500  -- Holstein
-Config.CowTypes[2].price = 1200 -- Jersey
+-- Pig Feeding (Schweine)
+Config.PigFeeding = {
+    CooldownMinutes = 20,
+    RequireItems = true,     -- Futter benötigt!
+    RemoveItemsAfterUse = true,  -- Futter wird verbraucht!
+}
 ```
 
 ---
 
-## 🏗️ Datenbankstruktur
+## 🐛 **Troubleshooting**
 
-```
-holycow_types      - Kuh-Rassen (Templates)
-holycow_slots      - Positionen auf dem Hof
-holycow_owned      - Besessene Kühe (Player)
-holycow_version    - Version-Tracking
-```
+### **Tiere spawnen nicht:**
+1. Check F8 Console für Errors
+2. Sind die Models korrekt? (`a_c_cow`, `a_c_hen`, `a_c_pig`)
+3. SQL korrekt ausgeführt?
 
----
+### **NPCs spawnen nicht:**
+1. Koordinaten in Config prüfen
+2. Models existieren? (`a_m_m_farmer_01`, `a_m_m_hillbilly_01`)
 
-## 🔧 Troubleshooting
+### **Cooldown funktioniert nicht:**
+1. Server-Uhrzeit korrekt?
+2. MySQL Timezone richtig?
 
-### **Kühe spawnen nicht**
-
-```bash
-# Check:
-1. SQL ausgeführt?
-2. Slots in DB vorhanden? → /holycow_slots
-3. F8 Console Errors?
-4. oxmysql läuft?
-```
-
-### **NPC nicht da**
-
-```lua
--- config.lua:
-Config.ShopNPC.Enabled = true
-Config.ShopNPC.Coords = vector4(...) -- Richtige Koordinaten?
--- Der NPC fliegt? Setze die letzte Koordinante z.b 34.44 auf 33.44 - also um 1 runter.
-```
-
-### **Shop öffnet nicht**
-
-```bash
-# Check:
-1. ox_target installiert?
-2. F8 Console: "ox_target added to NPC"?
-3. Test: /holycow_shop
-```
+### **Items verschwinden:**
+1. ox_inventory installiert?
+2. Items in `items.lua` hinzugefügt?
 
 ---
 
-## 🚀 Roadmap
+## 📝 **Changelog**
 
-### **v0.2.0 - Stats System (nächste Woche)**
-- 4-Stats: Gesundheit, Hunger, Sauberkeit, Laune
-- Füttern (3 Futter-Typen)
-- Stats-Anzeige in UI
+### **v0.3.0 (Latest)**
+- ✅ Hühner hinzugefügt (3 Rassen)
+- ✅ Schweine hinzugefügt (3 Rassen)
+- ✅ 3 separate NPCs
+- ✅ 30 Slots total (10 pro Tierart)
+- ✅ Fütter-System für Schweine
+- ✅ Eier-Sammel-System für Hühner
+- ✅ Multi-Tier Database-Schema
 
-### **v0.3.0 - Growth System**
-- 3 Stages: Kalb → Jungtier → Erwachsen
-- Alterung über Zeit
-- Stage-basierte Features
-
-### **v0.4.0 - Production**
-- Melken!
-- Zustandsbasierter Ertrag
-- Cooldowns
-
-### **v1.0.0 - Release!**
-- Alle Features poliert
-- Balance-Testing
-- Dokumentation
+### **v0.2.1**
+- ✅ DATETIME Bug gefixt
+- ✅ Zombie Slots Auto-Cleanup
+- ✅ ox_target Race Condition gefixt
+- ✅ 5 Kuh-Rassen
 
 ---
 
-## ❓ FAQ
+## 💬 **Support**
 
-**Q: Kann ich mehr als 6 Kühe haben?**
-A: In v0.1.0: Nein. Später kommt Slot-Upgrade-System.
-
-**Q: Was macht Jersey besser als Holstein?**
-A: In v0.1.0: Noch nichts (Stats kommen in v0.2.0+)
-
-**Q: Kann ich Kühe verkaufen?**
-A: Noch nicht. Kommt in v0.6.0.
-
-**Q: Warum kann ich nicht melken?**
-A: v0.1.0 ist nur Foundation. Melken kommt v0.4.0!
+Bei Problemen:
+1. Check Console (F8)
+2. Check Server Console
+3. Lies TROUBLESHOOTING oben
 
 ---
 
-## 📝 Changelog
+## 📜 **Credits**
 
-### [0.1.0] - Foundation
-- Kauf-System
-- Slot-Management
-- Spawning
-- MySQL-Integration
-- Shop-UI
+- **Original:** HM Holy Cow by HM Scripts
+- **Framework:** ox_lib, ox_target, oxmysql
 
 ---
 
-## 🐄 Credits
-
-**Made with ❤️ by HM Scripts**
-
-Dank an:
-- ox_lib Team
-- ox_target Team
-- FiveM Community
-
----
-
-**Version:** 0.1.0  
-**Status:** Foundation ✅  
-**Next:** v0.2.0 - Stats System
-
-🐄 **HOLY COW!** 🐄
+**Viel Spaß beim Farmen! 🐄🐔🐷**
