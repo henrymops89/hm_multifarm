@@ -3,8 +3,8 @@ game 'gta5'
 lua54 'yes'
 
 author 'HM Scripts'
-description 'HM Holy Cow v0.1.0 - Farm Management System (Foundation)'
-version '0.1.0'
+description 'Multi-Farm v0.3.0 - Kühe, Hühner, Schweine'
+version '0.3.0'
 
 dependencies {
     'ox_lib',
@@ -14,26 +14,29 @@ dependencies {
 
 shared_scripts {
     '@ox_lib/init.lua',
-    'config.lua'
+    'config.lua',
+    'bridge/framework.lua',
+    'bridge/inventory.lua',
+    '@lation_ui/init.lua'
 }
 
 client_scripts {
-    'bridge/framework.lua',
+    'bridge/target.lua', 
     'client/main.lua',
     'client/npc.lua',
-    'client/ui.lua'
+    'client/ui.lua',
+    'client/milking.lua',
+    'client/chicken.lua',
+    'client/pig.lua'
 }
 
 server_scripts {
     '@oxmysql/lib/MySQL.lua',
-    'bridge/framework.lua',
     'server/database.lua',
     'server/main.lua',
-    'server/shop.lua'
-}
-
-ui_page 'html/shop.html'
-
-files {
-    'html/shop.html'
+    'server/shop.lua',
+    'server/milking.lua',
+    'server/chicken.lua',
+    'server/pig.lua',
+    'server/debug.lua'
 }
