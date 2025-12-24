@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Holy Cow Shop</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: transparent;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        body.show {
+            display: flex;
+        }
+
+        .container {
+            background: linear-gradient(145deg, #8B4513 0%, #654321 100%);
+            border: 5px solid #5D3A1A;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 900px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: slideUp 0.4s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header h1 {
+            color: #F4E4C1;
+            font-size: 36px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #D4AF37;
+            font-size: 16px;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(220, 53, 69, 0.8);
+            border: 2px solid #c82333;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: #c82333;
+            transform: rotate(90deg) scale(1.1);
+        }
+
+        .cow-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .cow-card {
+            background: linear-gradient(135deg, #F4E4C1 0%, #E8D4A8 100%);
+            border: 3px solid #D4AF37;
+            border-radius: 15px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .cow-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .cow-card.rare {
+            border-color: #FFD700;
+            background: linear-gradient(135deg, #FFF8DC 0%, #FFE4B5 100%);
+        }
+
+        .cow-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .cow-icon {
+            font-size: 48px;
+        }
+
+        .cow-price {
+            font-size: 24px;
+            font-weight: 700;
+            color: #228B22;
+        }
+
+        .cow-name {
+            font-size: 22px;
+            font-weight: 700;
+            color: #654321;
+            margin-bottom: 10px;
+        }
+
+        .cow-description {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+            min-height: 40px;
+        }
+
+        .cow-stats {
+            background: rgba(139, 69, 19, 0.1);
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            font-size: 13px;
+            color: #654321;
+        }
+
+        .buy-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+            border: 2px solid #1e7e34;
+            color: white;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .buy-btn:hover {
+            background: linear-gradient(135deg, #218838 0%, #1e7e34 100%);
+            transform: scale(1.05);
+        }
+
+        .buy-btn:disabled {
+            background: #ccc;
+            border-color: #999;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .slots-info {
+            text-align: center;
+            color: #F4E4C1;
+            font-size: 18px;
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        .slot-selector {
+            margin-top: 15px;
+        }
+
+        .slot-selector select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 2px solid #D4AF37;
+            font-size: 14px;
+            background: white;
+        }
+
+        .rarity-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .rarity-common {
+            background: #808080;
+            color: white;
+        }
+
+        .rarity-rare {
+            background: #4169E1;
+            color: white;
+        }
+
+        .rarity-legendary {
+            background: #FFD700;
+            color: #654321;
+        }
+
+        /* Notification System */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 9999;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.success {
+            background: #28a745;
+        }
+        
+        .notification.error {
+            background: #dc3545;
+        }
+        
+        .notification.info {
+            background: #17a2b8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button class="close-btn" onclick="closeShop()">&#10005;</button>
+        
+        <div class="header">
+            <h1>&#x1F404; Holy Cow Shop &#x1F404;</h1>
+            <p id="farmName">Loading...</p>
+        </div>
+
+        <div class="cow-types" id="cowTypes"></div>
+
+        <div class="slots-info">
+            <span id="slotsInfo">Freie Slots: -/-</span>
+        </div>
+    </div>
+
+    <script>
+        let shopData = null;
+        const resourceName = window.location.hostname; // DYNAMIC!
+
+        // Modern notification system
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => notification.classList.add('show'), 10);
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // NUI Message Listener
+        window.addEventListener('message', function(event) {
+            const data = event.data;
+
+            if (data.action === 'openShop') {
+                shopData = data.data;
+                renderShop();
+                document.body.classList.add('show');
+            } else if (data.action === 'closeShop') {
+                document.body.classList.remove('show');
+            }
+        });
+
+        // ESC to close
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeShop();
+            }
+        });
+
+        function renderShop() {
+            if (!shopData) return;
+
+            // Farm Name
+            const farmNameEl = document.getElementById('farmName');
+            if (farmNameEl) {
+                farmNameEl.textContent = shopData.farmName || 'Holy Cow Farm';
+            }
+
+            // Slots Info
+            const freeSlots = shopData.freeSlots.length;
+            const totalSlots = shopData.totalSlots;
+            const slotsInfoEl = document.getElementById('slotsInfo');
+            if (slotsInfoEl) {
+                slotsInfoEl.textContent = `Freie Slots: ${freeSlots}/${totalSlots}`;
+            }
+
+            // Cow Types
+            const container = document.getElementById('cowTypes');
+            if (!container) return;
+            
+            container.innerHTML = '';
+
+            shopData.cowTypes.forEach(cow => {
+                const card = document.createElement('div');
+                card.className = 'cow-card' + (cow.rarity !== 'common' ? ' ' + cow.rarity : '');
+
+                const rarityClass = 'rarity-' + cow.rarity;
+
+                card.innerHTML = `
+                    <div class="cow-header">
+                        <span class="cow-icon">${cow.icon || '&#x1F404;'}</span>
+                        <span class="cow-price">$${cow.price}</span>
+                    </div>
+                    <span class="rarity-badge ${rarityClass}">${cow.rarity.toUpperCase()}</span>
+                    <div class="cow-name">${cow.name}</div>
+                    <div class="cow-description">${cow.description}</div>
+                    <div class="cow-stats">
+                        <div class="stat-row">
+                            <span>Wachstum:</span>
+                            <span>${cow.stats.growth_speed}x</span>
+                        </div>
+                        <div class="stat-row">
+                            <span>Basis-Milch:</span>
+                            <span>${cow.stats.milk_base}x</span>
+                        </div>
+                        <div class="stat-row">
+                            <span>Max-Alter:</span>
+                            <span>${cow.stats.max_age} Tage</span>
+                        </div>
+                    </div>
+                    <div class="slot-selector">
+                        <select id="slot_${cow.id}" ${freeSlots === 0 ? 'disabled' : ''}>
+                            <option value="">Wähle Slot...</option>
+                            ${shopData.freeSlots.map(slot => 
+                                `<option value="${slot.id}">Slot #${slot.slot_number}</option>`
+                            ).join('')}
+                        </select>
+                    </div>
+                    <button class="buy-btn" onclick="purchaseCow('${cow.id}')" ${freeSlots === 0 ? 'disabled' : ''}>
+                        ${freeSlots === 0 ? 'Keine Slots frei' : 'Kaufen - $' + cow.price}
+                    </button>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        function purchaseCow(cowType) {
+            const slotSelect = document.getElementById('slot_' + cowType);
+            if (!slotSelect) {
+                showNotification('Fehler: Element nicht gefunden!', 'error');
+                return;
+            }
+            
+            const slotId = slotSelect.value;
+
+            if (!slotId) {
+                showNotification('Bitte wähle einen Slot!', 'error');
+                return;
+            }
+
+            // Send to Client with error handling
+            fetch(`https://${resourceName}/purchaseCow`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    cowType: cowType,
+                    slotId: parseInt(slotId)
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    console.log('Purchase successful!');
+                    showNotification('✅ Kuh erfolgreich gekauft!', 'success');
+                } else {
+                    console.error('Purchase failed:', data.error);
+                    showNotification('❌ Kauf fehlgeschlagen: ' + (data.error || 'Unbekannter Fehler'), 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showNotification('❌ Verbindungsfehler!', 'error');
+            });
+        }
+
+        function closeShop() {
+            document.body.classList.remove('show');
+            fetch(`https://${resourceName}/closeShop`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({})
+            }).catch(error => {
+                console.error('Error closing shop:', error);
+            });
+        }
+    </script>
+</body>
+</html>
